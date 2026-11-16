@@ -10,7 +10,7 @@ Solve
 $$-\Delta u = f \quad \text{on } (0,1)^2, \qquad u = 0 \text{ on the boundary.}$$
 
 - **Grid:** $N \times N$ interior points, $h = 1/(N+1)$.
-- **Matrix:** $A = I \otimes T + T \otimes I$ with $T = \frac{1}{h^2}\,\mathrm{tridiag}(-1, 2, -1)$. $A$ is sparse, symmetric and positive definite.
+- **Matrix:** $A = I \otimes T + T \otimes I$ with $T = \frac{1}{h^2} \mathrm{tridiag}(-1, 2, -1)$. $A$ is sparse, symmetric and positive definite.
 - **Test problem 1 (accuracy):** $u = \sin(\pi x)\sin(\pi y)$, $f = 2\pi^2 u$.
 - **Test problem 2 (solver comparison):** $f = 1$, checked against a direct sparse solve (`scipy.sparse.linalg.spsolve`).
 - **Stopping rule:** $\lVert b - Ax\rVert_2 / \lVert b\rVert_2 < \varepsilon = 10^{-10}$, starting from $x = 0$.
@@ -55,10 +55,12 @@ Then open `2d_poisson_project.ipynb` and use **Kernel → Restart & Run All**. N
 ### 1. Discretisation error is second order
 
 For $f = 2\pi^2\sin(\pi x)\sin(\pi y)$ the leading truncation error of the stencil is $-\frac{h^2}{12}(u_{xxxx} + u_{yyyy})$, which gives
-$$\max|u_h - u| \approx \frac{\pi^2}{12}\,h^2 \approx 0.8225\,h^2 .$$
+------------------------------------------------------------------------------------------
+$$\max|u_h - u| \approx \frac{\pi^2}{12} h^2 \approx 0.8225\,h^2 .$$
+------------------------------------------------------------------------------------------
 Derivation: [NOTE.pdf](NOTE.pdf), section 1.
 
-| $N$ | max error | error $/\,h^2$ |
+| $N$ | max error | error $/h^2$ |
 |---|-----------|-----------|
 | 7 | 1.295e-02 | 0.8288 |
 | 15 | 3.219e-03 | 0.8241 |
@@ -94,8 +96,8 @@ Predicted iteration counts for tolerance $\varepsilon$:
 - **Jacobi:** $k \approx \dfrac{\ln\varepsilon}{\ln\rho_J}$ with $\rho_J = \cos(\pi h)$.
 - **Gauss-Seidel:** $\rho_{GS} = \rho_J^2 = \cos^2(\pi h)$.
 - **SOR, simple:** $\rho_{SOR} = \omega_{\mathrm{opt}} - 1$ and $k \approx \dfrac{\ln\varepsilon}{\ln\rho_{SOR}}$.
-- **SOR, refined:** the solution of $k\,\rho_{SOR}^{\,k} = \varepsilon$ (Jordan block at $\omega_{\mathrm{opt}}$).
-- **CG (upper bound):** $k \approx \tfrac12\cot\!\big(\tfrac{\pi h}{2}\big)\ln\dfrac{2}{\varepsilon}$.
+- **SOR, refined:** the solution of $k\ \rho_{SOR}^{k} = \varepsilon$ (Jordan block at $\omega_{\mathrm{opt}}$).
+- **CG (upper bound):** $k \approx \tfrac12\cot\big(\tfrac{\pi h}{2}\big)\ln\dfrac{2}{\varepsilon}$.
 
 | $N$ | Method | Measured | Simple prediction | Measured / simple | Refined prediction | Measured / refined |
 |---|--------|----------|-------------------|-------------------|--------------------|--------------------|
